@@ -79,13 +79,15 @@
 	// 	}
 	// ];
 
-	const lis = document.querySelectorAll('li');
+	const lis = document.querySelectorAll('li');//页面中所有的li
 	const ems = list.getElementsByTagName('em');
 	const ems2 = document.querySelectorAll('.info em');
 	let ghf = 0;
 
+	//总计个数
 	function zjNum(){
-		let num = 0
+		let num = 0;
+		//把所有的个数获取出来，然后相加
 		for(let i=0;i<ems.length;i++){
 			num += ems[i].innerHTML * 1;
 		}
@@ -101,10 +103,15 @@
 
 
 	function getZuigui(){
+		/*
+			找到所有的个数，然后去判断个数是否为0
+			不为0就说购买了，购买了就有可能是最贵
+			获取出购买的单价，通过单价进行比较谁最贵
+		*/
 		let min = 0;
 		for(let i=0;i<lis.length;i++){
-			let em = lis[i].getElementsByTagName('em')[0];
-			let strong = lis[i].getElementsByTagName('strong')[0];
+			let em = lis[i].getElementsByTagName('em')[0];//个数
+			let strong = lis[i].getElementsByTagName('strong')[0];//单价
 			//数量不为0
 			if(em.innerHTML !== '0'){
 				// parseFloat(strong.innerHTML) 单价
@@ -119,31 +126,55 @@
 	}
 	
 	function fn(i){
+		//找到某个li
 		let li = lis[i];
-		let is = li.getElementsByTagName('i');
-		let em = li.getElementsByTagName('em')[0];
-		let strong = li.getElementsByTagName('strong')[1];
-		let price = li.getElementsByTagName('strong')[0];
+		//下面的元素都属于指定li下
+		let is = li.getElementsByTagName('i');//按钮
+		let em = li.getElementsByTagName('em')[0];//个数
+		let strong = li.getElementsByTagName('strong')[1];//小计
+		let price = li.getElementsByTagName('strong')[0];//单价
 		let prev = is[0];
 		let next = is[1];
 
+		//++
 		next.onclick = function(){
-			let num = em.innerHTML * 1;
+			let num = em.innerHTML * 1; //num为数字类型的个数
 			em.innerHTML = ++ num;
+			//小计为个数 * 单价
 			let xj = num * parseFloat(price.innerHTML);
+			//小计赋值
 			strong.innerHTML = xj + '元';
+			//
 			ems2[0].innerHTML = zjNum();
 			ghf += parseFloat(price.innerHTML);
 			ems2[1].innerHTML = ghf;
 			ems2[2].innerHTML = getZuigui();
 		}
+		//--
 		prev.onclick = function(){
 			let num = em.innerHTML * 1;
 			if(num<=0)return;
 			em.innerHTML = -- num;
 			strong.innerHTML = num * parseFloat(price.innerHTML) + '元';
+			ems2[0].innerHTML = zjNum();
+			ghf -= parseFloat(price.innerHTML);
+			ems2[1].innerHTML = ghf;
+			ems2[2].innerHTML = getZuigui();
 		}
 	}
+
+	/*
+		ul.innerHTML += '<li></li>'
+		ul.innerHTML = ul.innerHTML + '<li></li>'
+
+
+		ul.innerHTML -= '<li></li>'
+
+		ul.innerHTML = ul.innerHTML - '<li></li>'
+
+	*/
+
+
 
 
 
